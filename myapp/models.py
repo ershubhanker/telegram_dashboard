@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+
 class CustomUser(AbstractUser):
     # Add any additional fields here
     # For example, is_admin and is_staff to distinguish between user types

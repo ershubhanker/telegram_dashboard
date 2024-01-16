@@ -24,6 +24,9 @@ urlpatterns = [
     path('login/', myapp_views.user_login, name='login'),
     path('index/', myapp_views.index, name='index'),
     path('', lambda request: redirect('login/'), name='root'),  # Redirect root to login
+    path('logout/', myapp_views.user_logout, name='logout'),
+    path('admin/', myapp_views.adminhome, name='admin_dashboard'),
+    
     # Include other app-specific URLs here
 ]
 
