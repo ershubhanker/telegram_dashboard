@@ -22,13 +22,13 @@ class Dtypes(Enum):
 
 class UploadImgeSerializer(serializers.Serializer):
     name = serializers.CharField()
-    email = serializers.EmailField()
-    diabetes_status  = serializers.BooleanField(default=False)
-    diabetes_type  = serializers.ChoiceField( choices=Dtypes.choices())
+    # email = serializers.EmailField()
+    # diabetes_status  = serializers.BooleanField(default=False)
+    # diabetes_type  = serializers.ChoiceField( choices=Dtypes.choices())
 
-    left_eye = serializers.ImageField(required=False, allow_null=True)
-    right_eye = serializers.ImageField(required=False, allow_null=True)
-    check_token= serializers.CharField()
+    # left_eye = serializers.ImageField(required=False, allow_null=True)
+    # right_eye = serializers.ImageField(required=False, allow_null=True)
+    # check_token= serializers.CharField()
  
 
 class LoginSerializer(TokenObtainPairSerializer):

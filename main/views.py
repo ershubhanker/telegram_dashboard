@@ -81,6 +81,7 @@ def get_saved_token():
     return global_token, check_user
 
 # register
+# 1
 def doctor_register(request):
     if request.method == 'POST':
         form = DoctorRegistrationForm(request.POST)
@@ -206,6 +207,7 @@ def email_verification_sent(request):
 #     return render(request, 'register.html', {'form': form})
 
 # login
+# 2
 def doctor_login(request):
     if request.method == 'POST':
         form = DoctorLoginForm(data=request.POST)
@@ -576,154 +578,157 @@ class  ImageprocessViewAPI(ModelViewSet):
     
         serializer.is_valid(raise_exception=True)
         name = serializer.validated_data.get('name')
-        email = serializer.validated_data.get('email')
-        diabetes_status = serializer.validated_data.get('diabetes_status')
-        diabetes_type = serializer.validated_data.get('diabetes_type')
-        left_eye = serializer.validated_data.get('left_eye')
-        right_eye = serializer.validated_data.get('right_eye')
-        token = serializer.validated_data.get('check_token')
+        print(name)
+
+        # email = serializer.validated_data.get('email')
+        # diabetes_status = serializer.validated_data.get('diabetes_status')
+        # diabetes_type = serializer.validated_data.get('diabetes_type')
+        # left_eye = serializer.validated_data.get('left_eye')
+        # right_eye = serializer.validated_data.get('right_eye')
+        # token = serializer.validated_data.get('check_token')
         # print(get_saved_token, 'GOTIT')
-        second_value, current_user=get_saved_token()
-        print(second_value, 'GOTIT', current_user)
-        user_credit = Doctor.get_credit(current_user)  # Get the doctor's credit.
-        print(user_credit, "USER CREDIT", current_user)
-        if token==second_value:
+        # second_value, current_user=get_saved_token()
+        # print(second_value, 'GOTIT', current_user)
+        # user_credit = Doctor.get_credit(current_user)  # Get the doctor's credit.
+        # print(user_credit, "USER CREDIT", current_user)
+        # if token==second_value:
             
-            patient_id=generate_random_patient_id()
-            # print(left_eye)
-            # print(type(left_eye))
+        #     patient_id=generate_random_patient_id()
+        #     # print(left_eye)
+        #     # print(type(left_eye))
 
-            api_responses = {
-            "left_eye": {},
-            "right_eye": {},}
-            left_quality,left_analyze,right_quality,right_analyze = 0.0,0.0,0.0,0.0
-            if left_eye is None and right_eye is None:
+        #     api_responses = {
+        #     "left_eye": {},
+        #     "right_eye": {},}
+        #     left_quality,left_analyze,right_quality,right_analyze = 0.0,0.0,0.0,0.0
+        #     if left_eye is None and right_eye is None:
                 
-                return Response(
-                {"message": "No single images found"})
+        #         return Response(
+        #         {"message": "No single images found"})
 
-            if left_eye:
-                left_api_url = f'http://3.7.242.24:8006/quality_check?unique_id={patient_id}'
-                # left_files = {'file': open(f"{left_eye}", 'rb')}
-                left_files = {'file': left_eye}
-                left_response = requests.post(left_api_url, files=left_files)
-                print(left_response.json(), 'JSON')
-                print(left_response.json().get("model_coef"), 'JSONlp')
-                api_responses["left_eye"]["quality_check"] = left_response.json()
-                try:
-                    left_quality = float(left_response.json().get("model_coef"))
-                    # print(left_quality,'TEST')
-                except ValueError:
-                    left_quality = 0.0
+        #     if left_eye:
+        #         left_api_url = f'http://3.7.242.24:8006/quality_check?unique_id={patient_id}'
+        #         # left_files = {'file': open(f"{left_eye}", 'rb')}
+        #         left_files = {'file': left_eye}
+        #         left_response = requests.post(left_api_url, files=left_files)
+        #         print(left_response.json(), 'JSON')
+        #         print(left_response.json().get("model_coef"), 'JSONlp')
+        #         api_responses["left_eye"]["quality_check"] = left_response.json()
+        #         try:
+        #             left_quality = float(left_response.json().get("model_coef"))
+        #             # print(left_quality,'TEST')
+        #         except ValueError:
+        #             left_quality = 0.0
 
-                left_api_analyze_url = f'http://3.7.242.24:8000/dr_analyze?unique_id={patient_id}'
-                # left_analyze_files = {'file': open(f"{left_eye}", 'rb')}
-                left_analyze_files = {'file': left_eye}
-                left_analyze_response = requests.post(left_api_analyze_url, files=left_analyze_files)
-                left_analyze_data = left_analyze_response.json()
+        #         left_api_analyze_url = f'http://3.7.242.24:8000/dr_analyze?unique_id={patient_id}'
+        #         # left_analyze_files = {'file': open(f"{left_eye}", 'rb')}
+        #         left_analyze_files = {'file': left_eye}
+        #         left_analyze_response = requests.post(left_api_analyze_url, files=left_analyze_files)
+        #         left_analyze_data = left_analyze_response.json()
 
-                left_model_response = left_analyze_data["model_response"]
-                try:
-                    left_analyze = float(left_analyze_response.json().get("model_coef"))
-                except ValueError:
-                    left_analyze=0.0
-                left_binary_response = left_analyze_data["binary_response"]
+        #         left_model_response = left_analyze_data["model_response"]
+        #         try:
+        #             left_analyze = float(left_analyze_response.json().get("model_coef"))
+        #         except ValueError:
+        #             left_analyze=0.0
+        #         left_binary_response = left_analyze_data["binary_response"]
 
-            if right_eye:
-                right_api_url = f'http://3.7.242.24:8006/quality_check?unique_id={int(patient_id) + 1}'
-                right_files = {'file': right_eye}
-                right_response = requests.post(right_api_url, files=right_files)
-                api_responses["right_eye"]["quality_check"] = right_response.json()
-                right_quality = float(right_response.json().get("model_coef"))
+        #     if right_eye:
+        #         right_api_url = f'http://3.7.242.24:8006/quality_check?unique_id={int(patient_id) + 1}'
+        #         right_files = {'file': right_eye}
+        #         right_response = requests.post(right_api_url, files=right_files)
+        #         api_responses["right_eye"]["quality_check"] = right_response.json()
+        #         right_quality = float(right_response.json().get("model_coef"))
 
-                right_api_analyze_url = f'http://3.7.242.24:8000/dr_analyze?unique_id={int(patient_id) + 1}'
-                right_analyze_files = {'file':right_eye}
-                right_analyze_response = requests.post(right_api_analyze_url, files=right_analyze_files)
-                right_analyze_data = right_analyze_response.json()
+        #         right_api_analyze_url = f'http://3.7.242.24:8000/dr_analyze?unique_id={int(patient_id) + 1}'
+        #         right_analyze_files = {'file':right_eye}
+        #         right_analyze_response = requests.post(right_api_analyze_url, files=right_analyze_files)
+        #         right_analyze_data = right_analyze_response.json()
 
-                right_model_response = right_analyze_data["model_response"]
-                try:
-                    right_analyze = float(right_analyze_response.json().get("model_coef"))
-                except:
-                    right_analyze=0.0
-                right_binary_response = right_analyze_data["binary_response"]
+        #         right_model_response = right_analyze_data["model_response"]
+        #         try:
+        #             right_analyze = float(right_analyze_response.json().get("model_coef"))
+        #         except:
+        #             right_analyze=0.0
+        #         right_binary_response = right_analyze_data["binary_response"]
 
-            report_data = {
-                'patient_id': patient_id,
-                'patient_name': name,
-                'diabetes_status': diabetes_status,
-                'diabetes_type': diabetes_type,
-                # 'username': request.user.username,
-            }
+        #     report_data = {
+        #         'patient_id': patient_id,
+        #         'patient_name': name,
+        #         'diabetes_status': diabetes_status,
+        #         'diabetes_type': diabetes_type,
+        #         # 'username': request.user.username,
+        #     }
 
-            if left_eye and not right_eye:
-                report_data['left_model_response'] = left_model_response
-                report_data['left_model_coef'] = left_analyze
-                report_data['left_binary_response'] = left_binary_response
-                report_data['left_quality'] = left_quality
-                # report_data['left_eye_image_path'] = left_eye
-                # report_data['right_eye_image_path'] = ""
-            elif right_eye and not left_eye:
-                report_data['right_model_response'] = right_model_response
-                report_data['right_model_coef'] = right_analyze
-                report_data['right_binary_response'] = right_binary_response
-                report_data['right_quality'] = right_quality
-                # report_data['right_eye_image_path'] = right_eye
-                # report_data['left_eye_image_path'] = ""
-            else:
-                report_data['left_model_response'] = left_model_response
-                report_data['left_model_coef'] = left_analyze
-                report_data['left_binary_response'] = left_binary_response
-                report_data['left_quality'] = left_quality
-                # report_data['left_eye_image_path'] = left_eye
-                report_data['right_model_response'] = right_model_response
-                report_data['right_model_coef'] = right_analyze
-                report_data['right_binary_response'] = right_binary_response
-                report_data['right_quality'] = right_quality
-                # report_data['right_eye_image_path'] = right_eye
+        #     if left_eye and not right_eye:
+        #         report_data['left_model_response'] = left_model_response
+        #         report_data['left_model_coef'] = left_analyze
+        #         report_data['left_binary_response'] = left_binary_response
+        #         report_data['left_quality'] = left_quality
+        #         # report_data['left_eye_image_path'] = left_eye
+        #         # report_data['right_eye_image_path'] = ""
+        #     elif right_eye and not left_eye:
+        #         report_data['right_model_response'] = right_model_response
+        #         report_data['right_model_coef'] = right_analyze
+        #         report_data['right_binary_response'] = right_binary_response
+        #         report_data['right_quality'] = right_quality
+        #         # report_data['right_eye_image_path'] = right_eye
+        #         # report_data['left_eye_image_path'] = ""
+        #     else:
+        #         report_data['left_model_response'] = left_model_response
+        #         report_data['left_model_coef'] = left_analyze
+        #         report_data['left_binary_response'] = left_binary_response
+        #         report_data['left_quality'] = left_quality
+        #         # report_data['left_eye_image_path'] = left_eye
+        #         report_data['right_model_response'] = right_model_response
+        #         report_data['right_model_coef'] = right_analyze
+        #         report_data['right_binary_response'] = right_binary_response
+        #         report_data['right_quality'] = right_quality
+        #         # report_data['right_eye_image_path'] = right_eye
 
-            # Rest of your code for generating reports
-            #fetching data from ICD CODES
-            # d = pd.read_csv(csv_file_path)
-            # print(left_quality,left_analyze,right_quality,right_analyze)
-            # print(d)
-            filtered_rows = d[
-                (d['right_dr'] == right_analyze) &
-                (d['right_dme'] == right_quality) &
-                (d['left_dr'] == left_analyze) &
-                (d['left_dme'] == left_quality)
-                ]
+        #     # Rest of your code for generating reports
+        #     #fetching data from ICD CODES
+        #     # d = pd.read_csv(csv_file_path)
+        #     # print(left_quality,left_analyze,right_quality,right_analyze)
+        #     # print(d)
+        #     filtered_rows = d[
+        #         (d['right_dr'] == right_analyze) &
+        #         (d['right_dme'] == right_quality) &
+        #         (d['left_dr'] == left_analyze) &
+        #         (d['left_dme'] == left_quality)
+        #         ]
             
-            summary = ''
-            icd_codes = ''
-            icd_desc = ''
-            left_result = ''
-            right_result = ''
-            # print(filtered_rows, 'filtered_rows')
+        #     summary = ''
+        #     icd_codes = ''
+        #     icd_desc = ''
+        #     left_result = ''
+        #     right_result = ''
+        #     # print(filtered_rows, 'filtered_rows')
 
-            for index, row in filtered_rows.iterrows():
-                summary = row['summary']
-                icd_codes = row['icd_codes']
-                icd_desc = row['icd_desc']
-                left_result = row['left_result']
-                right_result = row['right_result']
-            report_data['summary'] = summary
-            report_data['icd_codes'] = icd_codes
-            report_data['icd_desc'] = icd_desc
-            report_data['left_result'] = left_result
-            report_data['right_result'] = right_result
+        #     for index, row in filtered_rows.iterrows():
+        #         summary = row['summary']
+        #         icd_codes = row['icd_codes']
+        #         icd_desc = row['icd_desc']
+        #         left_result = row['left_result']
+        #         right_result = row['right_result']
+        #     report_data['summary'] = summary
+        #     report_data['icd_codes'] = icd_codes
+        #     report_data['icd_desc'] = icd_desc
+        #     report_data['left_result'] = left_result
+        #     report_data['right_result'] = right_result
 
-            print(report_data,'kll')
-            if user_credit>0:
-                current_user.remove_credit() 
-                print('AFTER API USED CREDIT', current_user.credit_val)
-                # return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)
-            else:
-                return render(request, 'doctorpanel/recharge.html')
-            return Response(report_data)
-        else:
-            return Response(
-            {"message": "Invalid token"}, status=status.HTTP_401_UNAUTHORIZED
+        #     print(report_data,'kll')
+
+        #     if user_credit>0:
+        #         current_user.remove_credit() 
+        #         print('AFTER API USED CREDIT', current_user.credit_val)
+        #         # return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)
+        #     else:
+        #         return render(request, 'doctorpanel/recharge.html')
+        #     return Response(report_data)
+        # else:
+        return Response(
+            {"message": name}
         )
 
 #API TO REPORT DATAfrom django.http import JsonResponse
